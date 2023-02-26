@@ -87,7 +87,7 @@ function random(min, max){
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 function jumpkeeper(){
-    ctx.clearRect(keeper.x, keeper.y, keeper.width, keeper.height)
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
     const xrand = random(-525,525)
     const yrand = random(0,190)
     keeper.x+=xrand
@@ -190,7 +190,7 @@ function cleartext(){
 } 
 function text(){
     ctx.font = "italic bold 30px Arial, sans-serif";
-    ctx.fillSytle = 'Black'
+    ctx.fillStyle = 'Black'
     ctx.fillText("POWER:" +power, 1800, 920);
     ctx.fillText("SIDE:" +side, 1680, 920);
 }
