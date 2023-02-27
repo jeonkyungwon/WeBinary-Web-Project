@@ -89,9 +89,9 @@ var goal={
 }
 
 var goalbanner={
-    x : 500,
+    x : 600,
     y : 200,
-    width : 800,
+    width : 1000,
     height : 500,
     draw(){
         ctx.drawImage(showgoal, this.x, this.y, this.width, this.height);
@@ -207,11 +207,11 @@ var lr = 0
 function updateball(){
     ctx.clearRect(ball.x, ball.y, ball.width+50, ball.height+50);
     if(side == 0){
-        ball.y -= 450 + 100*(power+1);
+        ball.y -= 450 + 90*(power+1);
     }
     else{
         ball.x += 240*side;
-        ball.y -= 450 + 100*(power+1);
+        ball.y -= 450 + 90*(power+1);
     }
 }
 function updatecheck(){
@@ -274,7 +274,7 @@ function gamecontinue(){
     kee = 0;
 }
 
-var num = 0, goalcheck = 0;
+var num = 0, goalcheck = 0, nogoalcheck = 0;
 //main함수 -> 반복할 거
 function main(){  //main 함수
     requestAnimationFrame(main)
@@ -291,7 +291,7 @@ function main(){  //main 함수
         }
         else{
             console.log("노골")
-            goalcheck --;
+            nogoalcheck ++;
             nogoal.draw()
             missbanner.draw()
         }
@@ -304,16 +304,15 @@ function main(){  //main 함수
     else{
         render()
     }
-    console.log(goalcheck)
-    if(num >= 5*61){
-        cancelAnimationFrame(main)
-        cancelAnimationFrame(keyboardeventforkeeper)
-        if(goalcheck >= 3*61){
-            ctx.drawImage(gameover, 700, 200, 800, 300)
+    if(num >= 5*50){
+        if(goalcheck > nogoalcheck){
+            ctx.drawImage(youwin, 600, 200, 1000, 500)
         }
         else{
-            ctx.drawImage(youwin, 700, 200, 800, 300)
+            ctx.drawImage(gameover, 600, 200, 1000, 500)
         }
+        cancelAnimationFrame(main)
+        cancelAnimationFrame(keyboardeventforkeeper)
     }
 }
 
