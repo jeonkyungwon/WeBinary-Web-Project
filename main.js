@@ -79,6 +79,19 @@ var nogoal={
     }
 }
 
+function readykeeper(){
+    ctx.clearRect(dkeeper.x, dkeeper.y, dkeeper.width, dkeeper.height)
+    dkeeper.x = keeper.x
+    dkeeper.y = keeper.y
+    keeper.readydraw()
+}
+function readyball(){
+    ctx.clearRect(ball.x, ball.y, ball.width, ball.height)
+    ball.x = 1100;
+    ball.y = 900;
+    ball.width = 80;
+    ball.height = 80;
+}
 //2. 움직임
 // 2-1. 키퍼가 순간이동으로 움직여서 막는다.
 // 난수를 통해 x값 y값 정해서 더한다. 
@@ -90,9 +103,7 @@ function jumpkeeper(){
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     const xrand = random(-525,525)
     const yrand = random(0,190)
-    keeper.x+=xrand
     dkeeper.x += xrand
-    keeper.y-=yrand
     dkeeper.y -= yrand
 }
 
@@ -186,9 +197,10 @@ function collision(ball, keeper, net){
 
 //4. 택스트
 function cleartext(){
-    ctx.clearRect(1680, 920, canvas.width-1680, canvas.height-920);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 } 
 function text(){
+    cleartext()
     ctx.font = "italic bold 30px Arial, sans-serif";
     ctx.fillStyle = 'Black'
     ctx.fillText("POWER:" +power, 1800, 920);
@@ -204,11 +216,24 @@ function arender(){
     dkeeper.draw()
     ball.draw()
 }
+
+//f5키 안 눌러도 돌아가게 하기
+function gamecontinue(){
+    ctx.clearRect(700, 200, 800, 100)
+    readykeeper()
+    readyball()
+    side = 0;
+    power = 0;
+}
+
+var num = 0;
 //main함수 -> 반복할 거
 function main(){  //main 함수
     requestAnimationFrame(main)
     text()
     if(check == 1){
+        num++;
+        console.log(num)
         arender()
         if(goa == 1 && kee <= 1){
             goal.draw()
@@ -216,12 +241,18 @@ function main(){  //main 함수
         else{
             nogoal.draw()
         }
-        //check = 0;
+        setTimeout(function(){
+            gamecontinue()
+            check = 0;
+        }, 1000)
     }
     else{
         render()
     }
-    cancelAnimationFrame(main)
+    if(num >= 60*5){
+        cancelAnimationFrame(main)
+        console.log("Game Over!")
+    }
 }
 
     
