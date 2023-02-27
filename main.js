@@ -23,6 +23,18 @@ function loadImage(){
 
     scoreboard = new Image();
     scoreboard.src = 'scoreboard.png'
+
+    goalcheck = new Image();
+    goalcheck.src = 'goal.png'
+
+    showgoal = new Image();
+    showgoal.src = 'GOAL!.png'
+
+    misscheck = new Image();
+    misscheck.src = 'miss.png'
+
+    showmiss = new Image();
+    showmiss.srcS = 'nogoal.png'
 }
 
 //필요 소품: 축구공, 골대, 키퍼
@@ -64,24 +76,41 @@ var dkeeper = {
     }
 }
 var goal={
-    x : 700,
-    y : 200,
-    width : 800,
-    height : 100,
+    x : 20,
+    y : 940,
+    width : 70,
+    height : 70,
     draw(){
-        ctx.fillStyle = 'blue'
-        ctx.fillRect(this.x, this.y, this.width, this.height);
+        ctx.drawImage(goalcheck, this.x, this.y, this.width, this.height);
     }
 }
 
-var nogoal={
-    x : 700,
+var goalbanner={
+    x : 500,
     y : 200,
     width : 800,
-    height : 100,
+    height : 200,
     draw(){
-        ctx.fillStyle = 'red'
-        ctx.fillRect(this.x, this.y, this.width, this.height);
+        ctx.drawImage(showgoal, this.x, this.y, this.width, this.height);
+    } 
+}
+var missbanner ={
+    x : 500,
+    y : 200,
+    width : 800,
+    height : 200,
+    draw(){
+        ctx.drawImage(showmiss, this.x, this.y, this.width, this.height);
+    } 
+}
+
+var nogoal={
+    x : 20,
+    y : 940,
+    width : 70,
+    height : 70,
+    draw(){
+        ctx.drawImage(misscheck, this.x, this.y, this.width, this.height);
     }
 }
 
@@ -98,6 +127,9 @@ function readyball(){
     ball.width = 80;
     ball.height = 80;
 }
+
+//gap
+var gap = 90;
 //2. 움직임
 // 2-1. 키퍼가 순간이동으로 움직여서 막는다.
 // 난수를 통해 x값 y값 정해서 더한다. 
@@ -156,6 +188,7 @@ function keyboardeventforkeeper(){
         if(e.keyCode == 32){
             jumpkeeper()
             updateball()
+            updatecheck()
         }
 
         if(e.keyCode == 32){
@@ -178,7 +211,10 @@ function updateball(){
         ball.y -= 450 + 100*(power+1);
     }
 }
-
+function updatecheck(){
+    goal.x += gap;
+    nogoal.x += gap;
+}
 //3. collision check
 var goa = 0, kee = 0, check = 0;
 function collision(ball, keeper, net){
@@ -222,32 +258,39 @@ function arender(){
     net.draw()
     dkeeper.draw()
     ball.draw()
+    ctx.drawImage(scoreboard, 70, 900, 600, 150);
 }
 
 //f5키 안 눌러도 돌아가게 하기
 function gamecontinue(){
-    ctx.clearRect(700, 200, 800, 100)
     readykeeper()
     readyball()
     side = 0;
     power = 0;
+    goa = 0;
+    kee = 0;
 }
 
-var num = 0;
+var num = 0, goalcheck = 0, goalcheck_a = 0;
 //main함수 -> 반복할 거
 function main(){  //main 함수
     requestAnimationFrame(main)
     text()
     if(check == 1){
         num++;
-        console.log(num)
+        goalcheck_a = goalcheck;
         arender()
         if(goa == 1 && kee <= 1){
+            goalcheck += 1;
             goal.draw()
+            goalbanner.draw()
         }
         else{
+            goalcheck -= 1;
             nogoal.draw()
+            missbanner.draw()
         }
+
         setTimeout(function(){
             gamecontinue()
             check = 0;
@@ -256,7 +299,8 @@ function main(){  //main 함수
     else{
         render()
     }
-    if(num >= 60*5){
+
+    if(num >= 5*60){
         cancelAnimationFrame(main)
         cancelAnimationFrame(keyboardeventforkeeper)
         ctx.drawImage(gameover, 700, 200, 800, 300);
