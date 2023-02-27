@@ -17,6 +17,12 @@ function loadImage(){
 
     divingkeeper = new Image();
     divingkeeper.src = 'rrdivingkeeper.png'
+
+    gameover = new Image();
+    gameover.src = 'gameover.png'
+
+    scoreboard = new Image();
+    scoreboard.src = 'scoreboard.png'
 }
 
 //필요 소품: 축구공, 골대, 키퍼
@@ -203,13 +209,14 @@ function text(){
     cleartext()
     ctx.font = "italic bold 60px Arial, sans-serif";
     ctx.fillStyle = 'Black'
-    ctx.fillText("POWER:" +power, 1800, 1050);
-    ctx.fillText("SIDE:" +side, 1580, 1050);
+    ctx.fillText("POWER:" +power, 1800, 1000);
+    ctx.fillText("SIDE:" +side, 1580, 1000);
 }
 function render(){  //render 함수로 그려주기
     net.draw()
     keeper.readydraw()
     ball.draw()
+    ctx.drawImage(scoreboard, 70, 900, 600, 150);
 }
 function arender(){
     net.draw()
@@ -251,6 +258,8 @@ function main(){  //main 함수
     }
     if(num >= 60*5){
         cancelAnimationFrame(main)
+        cancelAnimationFrame(keyboardeventforkeeper)
+        ctx.drawImage(gameover, 700, 200, 800, 300);
         console.log("Game Over!")
     }
 }
