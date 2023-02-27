@@ -7,7 +7,6 @@ canvas.width=2200;
 canvas.height=1060;
 document.body.appendChild(canvas);
 
-
 function loadImage(){
     sball = new Image();
     sball.src = 'soccerball.png'
@@ -21,8 +20,8 @@ function loadImage(){
     gameover = new Image();
     gameover.src = 'gameover.png'
 
-    scoreboard = new Image();
-    scoreboard.src = 'scoreboard.png'
+    //scoreboard = new Image();
+    //scoreboard.src = 'scoreboard.png'
 
     goalcheckk = new Image();
     goalcheckk.src = 'goal.png'
@@ -78,6 +77,7 @@ var dkeeper = {
         ctx.drawImage(divingkeeper, this.x, this.y, this.width, this.height);
     }
 }
+
 var goal={
     x : 20,
     y : 940,
@@ -218,6 +218,11 @@ function updatecheck(){
     goal.x += gap;
     nogoal.x += gap;
 }
+var one = 1;
+var num = 0, goalcheck = 0, nogoalcheck = 0, score = 0;
+function updatescore(){
+    score += one;
+}
 //3. collision check
 var goa = 0, kee = 0, check = 0;
 function collision(ball, keeper, net){
@@ -238,6 +243,14 @@ function collision(ball, keeper, net){
     if((ball.y <= dkeeper.y && dkeeper.y<= ball.y+ ball.height) || (dkeeper.y <= ball.y && ball.y <= dkeeper.y + dkeeper.height)){
         kee += 1;
     }
+    if(goa == 1 && kee <= 1){
+        console.log("골")
+        goalbanner.draw()
+        updatescore()
+    }
+    else{
+        missbanner.draw()
+    }
 }
 
 //4. 택스트
@@ -250,18 +263,22 @@ function text(){
     ctx.fillStyle = 'Black'
     ctx.fillText("POWER:" +power, 1800, 1000);
     ctx.fillText("SIDE:" +side, 1580, 1000);
+    
+    ctx.font = 'italic bold 60px Arial, sans-serif';
+    ctx.fillStyle = 'Black'
+    ctx.fillText('score:' +score, 30, 1000);
 }
 function render(){  //render 함수로 그려주기
     net.draw()
     keeper.readydraw()
     ball.draw()
-    ctx.drawImage(scoreboard, 70, 900, 600, 150);
+    //ctx.drawImage(scoreboard, 70, 900, 600, 150);
 }
 function arender(){
     net.draw()
     dkeeper.draw()
     ball.draw()
-    ctx.drawImage(scoreboard, 70, 900, 600, 150);
+    //ctx.drawImage(scoreboard, 70, 900, 600, 150);
 }
 
 //f5키 안 눌러도 돌아가게 하기
@@ -274,7 +291,6 @@ function gamecontinue(){
     kee = 0;
 }
 
-var num = 0, goalcheck = 0, nogoalcheck = 0;
 //main함수 -> 반복할 거
 function main(){  //main 함수
     requestAnimationFrame(main)
@@ -286,13 +302,11 @@ function main(){  //main 함수
         if(goa == 1 && kee <= 1){
             console.log("골")
             goalcheck ++;
-            goal.draw()
             goalbanner.draw()
         }
         else{
             console.log("노골")
             nogoalcheck ++;
-            nogoal.draw()
             missbanner.draw()
         }
 
