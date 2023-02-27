@@ -201,10 +201,10 @@ function cleartext(){
 } 
 function text(){
     cleartext()
-    ctx.font = "italic bold 30px Arial, sans-serif";
+    ctx.font = "italic bold 60px Arial, sans-serif";
     ctx.fillStyle = 'Black'
-    ctx.fillText("POWER:" +power, 1800, 920);
-    ctx.fillText("SIDE:" +side, 1680, 920);
+    ctx.fillText("POWER:" +power, 1800, 1050);
+    ctx.fillText("SIDE:" +side, 1580, 1050);
 }
 function render(){  //render 함수로 그려주기
     net.draw()
