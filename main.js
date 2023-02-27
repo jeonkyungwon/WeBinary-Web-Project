@@ -24,8 +24,8 @@ function loadImage(){
     scoreboard = new Image();
     scoreboard.src = 'scoreboard.png'
 
-    goalcheck = new Image();
-    goalcheck.src = 'goal.png'
+    goalcheckk = new Image();
+    goalcheckk.src = 'goal.png'
 
     showgoal = new Image();
     showgoal.src = 'GOAL!.png'
@@ -34,7 +34,10 @@ function loadImage(){
     misscheck.src = 'miss.png'
 
     showmiss = new Image();
-    showmiss.srcS = 'nogoal.png'
+    showmiss.src = 'nogoal.png'
+
+    youwin = new Image();
+    youwin.src = 'youwin.png'
 }
 
 //필요 소품: 축구공, 골대, 키퍼
@@ -81,7 +84,7 @@ var goal={
     width : 70,
     height : 70,
     draw(){
-        ctx.drawImage(goalcheck, this.x, this.y, this.width, this.height);
+        ctx.drawImage(goalcheckk, this.x, this.y, this.width, this.height);
     }
 }
 
@@ -89,16 +92,16 @@ var goalbanner={
     x : 500,
     y : 200,
     width : 800,
-    height : 200,
+    height : 500,
     draw(){
         ctx.drawImage(showgoal, this.x, this.y, this.width, this.height);
     } 
 }
 var missbanner ={
-    x : 500,
+    x : 600,
     y : 200,
-    width : 800,
-    height : 200,
+    width : 1000,
+    height : 500,
     draw(){
         ctx.drawImage(showmiss, this.x, this.y, this.width, this.height);
     } 
@@ -129,7 +132,7 @@ function readyball(){
 }
 
 //gap
-var gap = 90;
+var gap = 80;
 //2. 움직임
 // 2-1. 키퍼가 순간이동으로 움직여서 막는다.
 // 난수를 통해 x값 y값 정해서 더한다. 
@@ -271,22 +274,24 @@ function gamecontinue(){
     kee = 0;
 }
 
-var num = 0, goalcheck = 0, goalcheck_a = 0;
+var num = 0, goalcheck = 0;
 //main함수 -> 반복할 거
 function main(){  //main 함수
     requestAnimationFrame(main)
     text()
     if(check == 1){
         num++;
-        goalcheck_a = goalcheck;
+        goalcheck;
         arender()
         if(goa == 1 && kee <= 1){
-            goalcheck += 1;
+            console.log("골")
+            goalcheck ++;
             goal.draw()
             goalbanner.draw()
         }
         else{
-            goalcheck -= 1;
+            console.log("노골")
+            goalcheck --;
             nogoal.draw()
             missbanner.draw()
         }
@@ -299,12 +304,16 @@ function main(){  //main 함수
     else{
         render()
     }
-
-    if(num >= 5*60){
+    console.log(goalcheck)
+    if(num >= 5*61){
         cancelAnimationFrame(main)
         cancelAnimationFrame(keyboardeventforkeeper)
-        ctx.drawImage(gameover, 700, 200, 800, 300);
-        console.log("Game Over!")
+        if(goalcheck >= 3*61){
+            ctx.drawImage(gameover, 700, 200, 800, 300)
+        }
+        else{
+            ctx.drawImage(youwin, 700, 200, 800, 300)
+        }
     }
 }
 
